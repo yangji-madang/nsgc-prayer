@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026년 시온찬양대 중보기도</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy: #16223F;
+    --navy-deep: #0F1830;
+    --gold: #C6A15B;
+    --gold-soft: #E7D9B8;
+    --ivory: #FAF7F0;
+    --paper: #FFFFFF;
+    --ink: #23283A;
+    --line: #E4DFD3;
+    --row-alt: #F5F2EA;
+    --header-bg: #E9EDF3;
+    --cell-pad-v: clamp(3px, 0.4vh, 5px);
+    --cell-pad-h: clamp(10px, 1.4vw, 20px);
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0; padding:0; height:100%;
+    background:var(--ivory);
+    color:var(--ink);
+    font-family:"Noto Sans KR","Malgun Gothic",sans-serif;
+    font-weight:400;
+  }
+
+  /* ---------- 고정 상단 영역 ---------- */
+  .fixed-top{
+    position:sticky; top:0; z-index:50;
+    background:var(--navy);
+    box-shadow:0 6px 16px rgba(15,24,48,0.25);
+  }
+  .title-bar{
+    display:flex; align-items:baseline; justify-content:space-between;
+    padding: clamp(10px,1.6vh,18px) clamp(16px,3vw,36px) clamp(6px,1vh,10px);
+    border-bottom:1px solid rgba(198,161,91,0.25);
+  }
+  .title-bar h1{
+    margin:0;
+    color:var(--paper);
+    font-weight:900;
+    letter-spacing:0.02em;
+    font-size:clamp(18px, 2.4vw, 28px);
+  }
+  .title-bar .sub{
+    color:var(--gold-soft);
+    font-size:clamp(11px, 1vw, 14px);
+    font-weight:500;
+    letter-spacing:0.03em;
+  }
+
+  .search-area{
+    background:var(--navy-deep);
+    padding: clamp(10px,1.6vh,16px) clamp(16px,3vw,36px);
+    display:flex; flex-direction:column; gap: clamp(8px,1.2vh,14px);
+  }
+  .search-row{
+    display:flex; align-items:center; gap: clamp(12px,1.6vw,20px); flex-wrap:wrap;
+  }
+  .search-label{
+    color:var(--gold);
+    font-weight:900;
+    letter-spacing:0.06em;
+    white-space:nowrap;
+    padding-right:2px;
+    font-size:clamp(14px, 1.15vw, 16px);
+  }
+  .part-buttons{ display:flex; flex-wrap:wrap; gap: clamp(8px,1vw,12px); }
+  .part-btn{
+    border:2px solid var(--gold);
+    background:#26365E;
+    color:var(--gold-soft);
+    padding: var(--cell-pad-v) clamp(16px,1.8vw,24px);
+    border-radius:5px;
+    font-family:inherit;
+    font-weight:700;
+    font-size:clamp(12px,1vw,14px);
+    letter-spacing:0.03em;
+    cursor:pointer;
+    transition:all .15s ease;
+  }
+  .part-btn:hover{
+    background:#33487C;
+  }
+  .part-btn.active{
+    background:var(--gold);
+    border-color:var(--gold-soft);
+    color:var(--navy-deep);
+    box-shadow:0 2px 8px rgba(198,161,91,0.4);
+  }
+
+  .name-select{
+    appearance:none;
+    background:var(--paper) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6"><path d="M0 0 L5 6 L10 0 Z" fill="%2316223F"/></svg>') no-repeat right 14px center;
+    border:2px solid var(--gold);
+    color:var(--navy-deep);
+    font-family:inherit;
+    font-weight:500;
+    font-size:clamp(12px,1vw,14px);
+    padding: var(--cell-pad-v) 34px var(--cell-pad-v) clamp(12px,1.2vw,16px);
+    border-radius:5px;
+    cursor:pointer;
+    min-width: 130px;
+  }
+  .name-select:focus{ outline:2px solid var(--gold); outline-offset:1px; }
+
+  .result-count{
+    margin-left:auto;
+    color:rgba(250,247,240,0.65);
+    font-size:clamp(11px,0.95vw,13px);
+    font-weight:500;
+    white-space:nowrap;
+  }
+
+  .col-headers{
+    display:grid;
+    grid-template-columns: 100px 140px 1fr;
+    background:var(--header-bg);
+    border-bottom:2px solid var(--gold);
+  }
+  .col-headers > div{
+    padding: clamp(8px,1.2vh,12px) clamp(10px,1.4vw,20px);
+    font-weight:700;
+    color:var(--navy);
+    font-size:clamp(12px,1vw,15px);
+    letter-spacing:0.05em;
+    text-align:center;
+    white-space:nowrap;
+    border-right:1px solid rgba(22,34,63,0.12);
+  }
+  .col-headers > div:last-child{ border-right:none; }
+
+  /* ---------- 본문 테이블 ---------- */
+  .table-wrap{ padding-bottom: 40px; }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    table-layout:auto;
+  }
+
+  tbody tr{ border-bottom:1px solid var(--line); }
+
+  td{
+    padding: var(--cell-pad-v) var(--cell-pad-h);
+    vertical-align:middle;
+    font-size: clamp(13px, 1.05vw, 17px);
+    line-height:1.55;
+  }
+  td.cell-part{
+    text-align:center;
+    font-weight:700;
+    color:var(--navy);
+    border-right:1px solid var(--line);
+    letter-spacing:0.04em;
+    white-space:nowrap;
+    padding-left: clamp(6px,0.8vw,10px);
+    padding-right: clamp(6px,0.8vw,10px);
+  }
+  td.cell-name{
+    text-align:center;
+    font-weight:700;
+    color:#3A3223;
+    border-right:1px solid var(--line);
+    white-space:nowrap;
+    padding-left: clamp(6px,0.8vw,10px);
+    padding-right: clamp(6px,0.8vw,10px);
+  }
+  td.cell-text{
+    text-align:left;
+    color:var(--ink);
+    white-space:pre-line;
+    padding-left: clamp(5px,0.7vw,10px);
+  }
+
+  .empty-row td{
+    text-align:center;
+    color:#9A9486;
+    font-style:normal;
+    padding: 40px 20px;
+    font-size: clamp(13px,1.1vw,16px);
+  }
+
+  @media (max-width:720px){
+    .result-count{ margin-left:0; width:100%; order:99; }
+  }
+</style>
+</head>
+<body>
+
+<div class="fixed-top">
+  <div class="title-bar">
+    <h1>2026년 시온찬양대 중보기도</h1>
+    <span class="sub">ZION CHOIR &nbsp;·&nbsp; INTERCESSORY PRAYER LIST</span>
+  </div>
+  <div class="search-area">
+    <div class="search-row">
+      <span class="search-label">파트</span>
+      <div id="partButtons" class="part-buttons"></div>
+    </div>
+    <div class="search-row">
+      <span class="search-label">이름</span>
+      <select id="nameSelect" class="name-select">
+        <option value="ALL">ALL</option>
+      </select>
+      <span class="result-count" id="resultCount"></span>
+    </div>
+  </div>
+  <div class="col-headers">
+    <div>파트</div>
+    <div>이름</div>
+    <div>기도제목</div>
+  </div>
+</div>
+
+<div class="table-wrap">
+  <table id="prayerTable">
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+
+<script>
+const DATA = [{"part": "Sop.", "name": "김기경", "text": "가족들이 신앙으로 고난을 극복하고 용서/치유/회복의 확신을 감사로 받게 해 주세요."}, {"part": "Sop.", "name": "김기경", "text": "두딸(소연,재연)의 삶을 주님의 선한 계획으로 인도하시고 여러문제들을 마주할 때마다 주님께 간구하는 믿음을 주세요"}, {"part": "Sop.", "name": "김숙", "text": "자녀(신영.황영)가 믿음의 배우자 만나고 젊은 날에 하나님의 구원을 기뻐하며 주님을 향유하는 은혜로운 가정 이루게 하소서."}, {"part": "Sop.", "name": "김숙", "text": "말씀 묵상과 순종 만사 주권이 주께 있음을 기억하고 현재 가르치는 암송클래스멤버들이 주님의 선대하심과 인자하심을 알게 하소서"}, {"part": "Sop.", "name": "김숙", "text": "남편의 치료하는 손길을 도와주시고 말씀을 통해 하나님을 새롭게 경험하고 선한 눈을 가지고 영적,육적으로\n연약한 자를 긍휼의 마음으로 돕는 자 되게 해 주세요."}, {"part": "Sop.", "name": "김숙", "text": "가족들이 기쁨으로 예배드리고 하나님과 동행하여 친밀함이 깊어지고 겸손히 행하게 해 주세요."}, {"part": "Sop.", "name": "김정숙", "text": "두자녀 (진원과 소연)를 하나님의 자녀로 불러주시고 아들의 진로와 딸의 사업을 축복하여 주세요."}, {"part": "Sop.", "name": "김정숙", "text": "두 자녀(진원과 소연)를 하나님의 자녀로 불러주시고 아들의 진로와 딸의 사업을 축복하여 주세요."}, {"part": "Sop.", "name": "최금옥", "text": "남편(조경식)투석, 저의 편평태선/당뇨관리, 아들부부(조용진/최나래, 조효진/김미숙) 구원받게 해주세요."}, {"part": "Alt.", "name": "강정원", "text": "가족 모두 건강하고 주님 계획하신대로 축복으로 인도하여 주세요."}, {"part": "Alt.", "name": "강정원", "text": "남편/아들 내외 업무 잘 감당하고 주님 뜻대로 계획하고 축복 안에서 큰 일꾼 되게 해 주세요."}, {"part": "Alt.", "name": "강정원", "text": "가족 건강, 주님 계획대로 축복하고 인도해 주세요."}, {"part": "Alt.", "name": "강정원", "text": "남편, 아들내외 가족이 주님 앞에 기도하며 구원확신 있는 생활하게 해 주세요."}, {"part": "Alt.", "name": "박현자", "text": "늘 감사, 말씀 중심으로 지혜롭게 살게 해 주세요."}, {"part": "Alt.", "name": "염선영", "text": "말씀과 기도로 성령충만한 한 해가 되게 해 주세요."}, {"part": "Alt.", "name": "윤수진", "text": "연습~예배시간까지 어려움 없이 찬양으로 잘 섬길 수 있는 건강을 주세요."}, {"part": "Alt.", "name": "이순란", "text": "가족 건강과 자녀(규민,가은) 진로,취업을 인도해 주세요."}, {"part": "Alt.", "name": "임순남", "text": "우리 부부가 과거의 상처와 분노에서 벗어나서 서로 용서하고 대화와 소통이 잘 되며 성숙한 믿음의 가정이 되게 해주세요."}, {"part": "Ten.", "name": "김현철", "text": "대원들이 예수그리스도 안에서 풍성한 은혜, 감사와 기쁨을 누리게 해 주세요."}, {"part": "Ten.", "name": "김현철", "text": "자녀(광규,대규,현영)들이 믿음의 자녀로 성숙하게 해 주세요."}, {"part": "Ten.", "name": "김현철", "text": "부모님(김덕용/백도분) 영혼 구원과 장모님(김풍자) 믿음과 건강을 마지막까지 지켜 주세요."}, {"part": "Ten.", "name": "김현철", "text": "직장에서 하나님 일하심 경험하며 하나님 영광 선포되는 해 되게 해 주세요."}, {"part": "Ten.", "name": "신용관", "text": "주님의 은혜로 가족 모두 건강하게 해 주세요."}, {"part": "Bas.", "name": "권남회", "text": "큰아들 부부, 교회 출석/예배드리고 막내아들 믿음 되찾고 반려자 잘 만나도록 해 주세요."}, {"part": "Bas.", "name": "김규철", "text": "일상에 감사가 넘치는 은혜, 성령 충만으로 매사 하나님 인도받게 해 주세요."}, {"part": "Bas.", "name": "김규철", "text": "아내가 오가는 길 안전 지켜주시고 교회 맡은 사역 잘 감당할 지혜, 체력, 화목함을 주세요."}, {"part": "Bas.", "name": "김규철", "text": "아들 건강 회복, 체력, 지혜, 하나님과의 관계가 더 깊어지게 해 주세요."}, {"part": "Bas.", "name": "윤여훈", "text": "자녀들이 자람에 따른 경제적인 필요를 채워 주세요."}, {"part": "Bas.", "name": "윤여훈", "text": "어머니(손목뼈 골절), 아버지(뇌경색증세) 건강 지켜주세요."}, {"part": "Bas.", "name": "윤여훈", "text": "자녀들(예서 고1, 예린 중2, 준식 초5)이 주 안에서 건강하게 자라고 가정이 평안하게 해 주세요."}, {"part": "Bas.", "name": "이병재", "text": "자녀(영민, 한나)들이 주님을 믿고 의지하는 삶을 살도록 해 주세요."}, {"part": "Bas.", "name": "이병재", "text": "성령 충만한 목자 역할 잘 감당하고 자녀(영민/한나)들이 주님 믿고 의지하며 살게 해 주세요."}, {"part": "Bas.", "name": "이병재", "text": "찬양을 통해 주님께 영광, 찬양의 기쁨을 누리게 해 주세요."}, {"part": "Bas.", "name": "조경식", "text": "시온 찬양대 잘 적응하여 온 마음과 삶으로 찬양하는 찬양대원이 되도록 기도해 주세요."}, {"part": "Bas.", "name": "조경식", "text": "주 3회 혈액투석중인데 합병증 없이 건강 유지하게 주세요."}, {"part": "Bas.", "name": "한명민", "text": "직장생활 지혜주시고 신앙도 성장하며 주님과 동행하게 해 주세요."}, {"part": "Bas.", "name": "한명민", "text": "희찬, 유진이가 하나님 은혜가운데 잘 성장하게 해 주세요."}, {"part": "Orc.", "name": "김남균", "text": "아들(원우)이 긍적적이고 즐겁게 학교생활하고 청년부에 출석하게 해 주세요."}, {"part": "Orc.", "name": "김남균", "text": "하나님 사랑 더욱 깨닫고 기도하고 순종하며 새로운 사업준비도 잘 되게 해 주세요."}, {"part": "Orc.", "name": "김남균", "text": "아내(서승미) 교회 봉사 잘 감당케 하시고 지혜롭고 현명하게 자녀들 양육하게 해 주세요."}, {"part": "Orc.", "name": "김남균", "text": "딸(보미) 대학 신입생 잘 적응하고 교회에 다시 출석하도록 해 주세요."}, {"part": "Orc.", "name": "심윤종", "text": "전도위원회/찬양대 소명 잘 감당하고 형편과 저의 의지를 주관하여 주세요."}];
+
+const PART_ORDER = ["Sop.","Alt.","Ten.","Bas.","Orc."];
+let currentPart = "ALL";
+let currentName = "ALL";
+
+// 파트 버튼 렌더
+const partButtonsEl = document.getElementById('partButtons');
+function renderPartButtons(){
+  const parts = ["ALL", ...PART_ORDER.filter(p => DATA.some(d => d.part === p))];
+  partButtonsEl.innerHTML = parts.map(p =>
+    `<button class="part-btn${p===currentPart?' active':''}" data-part="${p}">${p}</button>`
+  ).join('');
+  partButtonsEl.querySelectorAll('.part-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      currentPart = btn.dataset.part;
+      updateNameOptions();
+      currentName = "ALL";
+      render();
+    });
+  });
+}
+
+// 이름 옵션 갱신 (선택된 파트에 해당하는 이름만)
+const nameSelectEl = document.getElementById('nameSelect');
+function updateNameOptions(){
+  const pool = currentPart === "ALL" ? DATA : DATA.filter(d => d.part === currentPart);
+  const names = [...new Set(pool.map(d => d.name))].sort((a,b)=> a.localeCompare(b,'ko'));
+  nameSelectEl.innerHTML = `<option value="ALL">ALL</option>` +
+    names.map(n => `<option value="${n}">${n}</option>`).join('');
+  nameSelectEl.value = currentName && names.includes(currentName) ? currentName : "ALL";
+}
+nameSelectEl.addEventListener('change', ()=>{
+  currentName = nameSelectEl.value;
+  render();
+});
+
+function render(){
+  // 필터링
+  let rows = DATA.filter(d =>
+    (currentPart === "ALL" || d.part === currentPart) &&
+    (currentName === "ALL" || d.name === currentName)
+  );
+
+  const tbody = document.getElementById('tbody');
+  const countEl = document.getElementById('resultCount');
+
+  if(rows.length === 0){
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="3">해당 조건의 기도제목이 없습니다.</td></tr>`;
+    countEl.textContent = `0건`;
+    return;
+  }
+
+  countEl.textContent = `총 ${rows.length}건 · ${new Set(rows.map(r=>r.name)).size}명`;
+
+  // 같은 파트+이름 연속 구간을 rowspan으로 병합
+  let html = "";
+  let i = 0;
+  while(i < rows.length){
+    let j = i;
+    while(j < rows.length && rows[j].part === rows[i].part && rows[j].name === rows[i].name){
+      j++;
+    }
+    const span = j - i;
+    for(let k = i; k < j; k++){
+      html += "<tr>";
+      if(k === i){
+        html += `<td class="cell-part" rowspan="${span}">${rows[i].part}</td>`;
+        html += `<td class="cell-name" rowspan="${span}">${rows[i].name}</td>`;
+      }
+      html += `<td class="cell-text">${escapeHtml(rows[k].text)}</td>`;
+      html += "</tr>";
+    }
+    i = j;
+  }
+  tbody.innerHTML = html;
+  requestAnimationFrame(syncColumnWidths);
+}
+
+// 파트/이름 컬럼 너비를 본문 표의 실제(내용 기준 자동맞춤) 너비에 맞춰 고정헤더에 동기화
+function syncColumnWidths(){
+  const firstRow = document.querySelector('#tbody tr');
+  const colHeaders = document.querySelector('.col-headers');
+  if(!firstRow || !firstRow.querySelector('.cell-part')){
+    colHeaders.style.gridTemplateColumns = "100px 140px 1fr";
+    return;
+  }
+  const partW = firstRow.querySelector('.cell-part').getBoundingClientRect().width;
+  const nameW = firstRow.querySelector('.cell-name').getBoundingClientRect().width;
+  colHeaders.style.gridTemplateColumns = `${partW}px ${nameW}px 1fr`;
+}
+window.addEventListener('resize', ()=> requestAnimationFrame(syncColumnWidths));
+
+function escapeHtml(str){
+  return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+renderPartButtons();
+updateNameOptions();
+render();
+</script>
+</body>
+</html>
